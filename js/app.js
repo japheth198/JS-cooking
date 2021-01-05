@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded',function(){
     const url = 'https://api.spoonacular.com/recipes/random?apiKey=f5cb061b72a14bcca37b16883a4290f8';
+    var i = 0;
 
     fetch(url)
     .then(response =>{
@@ -16,14 +17,40 @@ document.addEventListener('DOMContentLoaded',function(){
         const summary = recipe[0].summary;
         const instructions = recipe[0].instructions;
 
+        let items = '';
+        ingredients.forEach(element => {
+            items += `
+        <div class="border">
+        <p class="title">${recipe[0].extendedIngredients[i].aisle}</p>
+            Amount: ${recipe[0].extendedIngredients[i].amount}
+            <br>
+            Unit: ${recipe[0].extendedIngredients[i].measures.metric.unitShort}
+            <br>
+            Measurements: ${recipe[0].extendedIngredients[i].measures.metric.amount} 
+            ${recipe[0].extendedIngredients[i].measures.metric.unitShort}
+        </div>
+         `
+        i++;
+        });
 
-        console.log(title);
-        let html =`
-        <img src="${image}">
-        Title: ${title}
-        Ingredients: ${ingredients}
-        Summary: ${summary}
-        Instructions: ${instructions}
+        let html = `
+        <div class="container">
+        <img src="${image}" id="image">
+        <br>
+        <h2>${title}</h2>
+        <h3>Total Ingredients: ${length}</h3>
+        <h3>Ingredients:</h3> ${items}
+        <br>
+        <div class="summary-border">
+        <h1 id="title-1">Summary:</h1>
+        ${summary}
+        </div>
+        <br>
+        <div class="instructions-border">
+        <h1 id="title-1">Instructions:</h1>
+        ${instructions}
+        </div>
+        </div>
         `;
         document.body.innerHTML = html;
     })
